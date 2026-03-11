@@ -87,44 +87,26 @@ nvm install 22
 nvm use 22
 ```
 
-### PostgreSQL client tools (required for imports and db-clone)
+### GIS tools (required for Zillow boundary import)
 
 | Tool | Purpose |
 |------|---------|
-| psql | Run SQL against the database |
-| pg_dump / pg_restore | Database backup and restore |
-| libpq-dev | PostgreSQL C library (needed by Python psycopg2) |
-
-**Ubuntu 24.04:**
-
-```bash
-sudo apt install -y postgresql-client libpq-dev
-```
-
-**macOS:**
-
-```bash
-brew install libpq
-brew link --force libpq
-```
-
-### GIS tools (required for geography imports)
-
-| Tool | Purpose |
-|------|---------|
-| osm2pgsql | Import OpenStreetMap data into PostGIS |
 | gdal-bin (ogr2ogr) | Convert shapefiles and geodata formats |
 
+> **Note:** `psql`, `pg_dump`, `pg_restore`, `shp2pgsql`, and `osm2pgsql` all run inside the
+> `supabase-db` Docker container — no host install needed. The import scripts use
+> `docker exec` and `docker cp` to interact with the database.
+
 **Ubuntu 24.04:**
 
 ```bash
-sudo apt install -y osm2pgsql gdal-bin
+sudo apt install -y gdal-bin
 ```
 
 **macOS:**
 
 ```bash
-brew install osm2pgsql gdal
+brew install gdal
 ```
 
 ### Python 3 + packages (required for scraping and data processing)
@@ -211,13 +193,12 @@ npm install -g @anthropic-ai/claude-code
 # System packages (run as your user, not root)
 sudo apt update && sudo apt install -y \
   git curl wget jq unzip openssh-client build-essential ca-certificates gnupg \
-  postgresql-client libpq-dev osm2pgsql gdal-bin \
-  python3 python3-pip python3-venv
+  gdal-bin python3 python3-pip python3-venv
 
 # Python packages
 pip3 install --user selenium requests
 
-# Docker, Node.js, GitHub CLI, Claude Code — see sections above
+# Docker, Node.js, GitHub CLI, Chrome, Claude Code — see sections above
 # (these require adding external repos or running install scripts)
 ```
 

@@ -291,11 +291,11 @@ else
     ((MISSING++))
 fi
 
-# Optional: check for osm2pgsql (only needed for OSM import)
-if command -v osm2pgsql &>/dev/null; then
-    log_info "osm2pgsql found (needed for OSM import)"
+# Optional tools
+if command -v jq &>/dev/null; then
+    log_info "jq found"
 else
-    log_warn "osm2pgsql not found — OSM import will be unavailable"
+    log_warn "jq not found — some scripts may need it (apt install jq)"
 fi
 
 if [ "$MISSING" -gt 0 ]; then
@@ -474,10 +474,8 @@ else
     fi
 
     IMPORT_OSM=false
-    if command -v osm2pgsql &>/dev/null; then
-        if confirm "Run OSM neighborhood import?" "n"; then
-            IMPORT_OSM=true
-        fi
+    if confirm "Run OSM neighborhood import? (runs osm2pgsql via Docker)" "n"; then
+        IMPORT_OSM=true
     fi
 
     # Group 2: Build scripts (depend on core geography)
