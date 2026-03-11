@@ -18,10 +18,26 @@ The setup script will walk you through:
 5. Running data imports (opt-in, interactive)
 6. Installing npm dependencies
 
+## Platform Support
+
+This project runs on **Linux** and **macOS**. The setup script requires bash, Docker, ssh/scp, and standard Unix tools.
+
+**Windows users:** The script does not run natively on Windows. Use one of these:
+
+| Method | Recommended? | Notes |
+|--------|-------------|-------|
+| **WSL2 (Ubuntu)** | Yes | Install from Microsoft Store, runs everything natively |
+| **VirtualBox + Ubuntu** | Yes | Full Linux VM, what the lead dev uses in production |
+| Git Bash | No | Partial support — docker path issues, ssh may work |
+| PowerShell | No | Won't work |
+
+For VirtualBox: install [Ubuntu Server](https://ubuntu.com/download/server) or Desktop, give it 4+ GB RAM and 40+ GB disk, install Docker and Node.js inside the VM, then clone and run.
+
 ## Prerequisites
 
 | Tool | Required | Notes |
 |------|----------|-------|
+| Linux or macOS | Yes | See platform support above for Windows |
 | Docker | Yes | Database and services run in containers |
 | Node.js 18+ | Yes | API and frontend builds |
 | git | Yes | Source control |
