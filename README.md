@@ -39,7 +39,7 @@ For VirtualBox: install [Ubuntu Server](https://ubuntu.com/download/server) or D
 |------|----------|-------|
 | Linux or macOS | Yes | See platform support above for Windows |
 | Docker | Yes | Database and services run in containers |
-| Node.js 18+ | Yes | API and frontend builds |
+| Node.js 22+ | Yes | API and frontend builds (LTS recommended) |
 | git | Yes | Source control |
 | osm2pgsql | Optional | Only for OSM neighborhood import |
 
