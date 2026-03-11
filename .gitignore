@@ -1,0 +1,25 @@
+# Project repos (each has its own git repo)
+database/
+ta-neighborhoods/
+allymetrix/
+ta-schools/
+ta-shared-tools/
+vibe-n8n/
+vibe-wp/
+vibe-zapier/
+hedgedoc/
+victor/
+
+# Environment
+.env
+
+# Database backups
+backups/
+
+# OS
+.DS_Store
+
+# Claude
+.claude/
+SESSION_STATUS.md
+.mcp.json
