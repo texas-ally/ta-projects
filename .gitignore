@@ -6,3 +6,7 @@
 !dev-setup.sh
 !.env.sample
 !README.md
+
+# Shared docs (prompts, quality checklists, cross-project standards)
+!docs/
+!docs/**
