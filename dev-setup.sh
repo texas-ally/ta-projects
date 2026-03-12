@@ -311,10 +311,6 @@ log_step "Step 2: Environment configuration"
 
 if [ -f .env ]; then
     log_info ".env already exists"
-    if confirm "Overwrite .env with fresh template?" "n"; then
-        cp .env.sample .env
-        log_info "Copied .env.sample → .env"
-    fi
 else
     cp .env.sample .env
     log_info "Created .env from template"
@@ -332,21 +328,21 @@ fi
 # ─── Step 3: Clone repos ────────────────────────────────────────────────────
 log_step "Step 3: Clone project repositories"
 
-# Repo definitions: git_url:local_dir:description
+# Repo definitions: git_url|local_dir|description
 CORE_REPOS=(
-    "https://github.com/texas-ally/ta-database.git:database:Shared PostgreSQL/PostGIS database"
-    "https://github.com/texas-ally/ta-shared-tools.git:ta-shared-tools:Import scripts and shared tooling"
-    "https://github.com/texas-ally/ta_neighborhoods.git:ta-neighborhoods:Neighborhoods app (API + frontend)"
+    "https://github.com/texas-ally/ta-database.git|database|Shared PostgreSQL/PostGIS database"
+    "https://github.com/texas-ally/ta-shared-tools.git|ta-shared-tools|Import scripts and shared tooling"
+    "https://github.com/texas-ally/ta_neighborhoods.git|ta-neighborhoods|Neighborhoods app (API + frontend)"
 )
 
 APP_REPOS=(
-    "https://github.com/texas-ally/allymetrix.git:allymetrix:Alcohol sales analytics"
-    "https://github.com/texas-ally/ta-schools.git:ta-schools:School ratings explorer"
+    "https://github.com/texas-ally/allymetrix.git|allymetrix|Alcohol sales analytics"
+    "https://github.com/texas-ally/ta-schools.git|ta-schools|School ratings explorer"
 )
 
 INFRA_REPOS=(
-    "https://github.com/texas-ally/vibe-n8n.git:vibe-n8n:n8n workflow automation"
-    "https://github.com/texas-ally/vibe-zapier.git:vibe-zapier:Zapier integration"
+    "https://github.com/texas-ally/vibe-n8n.git|vibe-n8n|n8n workflow automation"
+    "https://github.com/texas-ally/vibe-zapier.git|vibe-zapier|Zapier integration"
 )
 
 clone_group() {
@@ -355,13 +351,13 @@ clone_group() {
     local repos=("$@")
     echo -e "\n  ${BOLD}${label}:${NC}"
     for entry in "${repos[@]}"; do
-        IFS=':' read -r url dir desc <<< "$entry"
+        IFS='|' read -r url dir desc <<< "$entry"
         echo -e "    ${dir}/ — ${desc}"
     done
     echo ""
     if [ "$CLONE_ALL" = true ] || confirm "Clone ${label}?"; then
         for entry in "${repos[@]}"; do
-            IFS=':' read -r url dir desc <<< "$entry"
+            IFS='|' read -r url dir desc <<< "$entry"
             clone_repo "$url" "$dir"
         done
     else
@@ -410,6 +406,8 @@ else
     if docker ps --format '{{.Names}}' | grep -q '^supabase-db$'; then
         log_info "supabase-db is already running"
     else
+        log_substep "Building database image..."
+        (cd database && docker compose build)
         log_substep "Starting PostgreSQL + Supabase services..."
         (cd database && docker compose up -d)
         echo ""
